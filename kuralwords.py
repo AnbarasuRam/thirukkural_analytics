@@ -46,6 +46,7 @@ for i in range(0,1330):
     allKural.append(kural)
 
 df1 = pd.DataFrame(allKural)
+print(df1)
 
 #count the words
 kurals = df1['tamilKural']
@@ -55,9 +56,32 @@ for i in kurals:
 kuralwords = [item for sublist in k1 for item in sublist]  #flatten the list of lists
 kuralWordCounts = Counter(kuralwords)
 
-#write the list of words to a csv
-outfile="wordcloudtamil.csv"
+#write the list of tamil words to a csv
+outfile="tamilwords.csv"
 out=open(outfile,"w",encoding="UTF-16")
 for i in kuralwords:
     out.write(i+"\n")
 out.close()
+
+#translated english kurals
+enKurals = df1['englishkural']
+enk1 = []
+for i in enKurals:
+    enk1.append(i.split())
+enkuralwords = [item for sublist in enk1 for item in sublist]
+enkuralWordCounts = Counter(enkuralwords)
+
+import nltk
+from nltk.corpus import stopwords
+nltk.download("stopwords")
+filtered_words = [word for word in enkuralwords if word not in stopwords.words('english')]
+
+#write the list of english words to a csv
+outfile="englishwords.csv"
+out=open(outfile,"w",encoding="UTF-16")
+for i in filtered_words:
+    out.write(i+"\n")
+out.close()
+
+#paste the words from the csv file in a word cloud generator like http://www.wordclouds.com/
+#வாழ்க தமிழ் வளர்க தமிழ்
